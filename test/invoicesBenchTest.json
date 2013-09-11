@@ -111,12 +111,12 @@
         }
     },
     "edges" : [ 
-    ["load1", "select14Days"], ["select14Days", "join"],
-    ["load2", "projectItems"], ["projectItems", "selectCanceled"], ["selectCanceled", "join"],
-    ["join", "projectResult"],
+        ["load1", "select14Days"], ["select14Days", "join"],
+        ["load2", "projectItems"], ["projectItems", "selectCanceled"], ["selectCanceled", "join"],
+        ["join", "projectResult"],
     
-    ["load1DD", "select14DaysDD"], ["select14DaysDD", "joinDD"],
-    ["load2DD", "projectItemsDD"], ["projectItemsDD", "selectCanceledDD"], ["selectCanceledDD", "joinDD"]
-    ,["joinDD", "projectResultDD"]
+        ["load1DD", "select14DaysDD"], ["select14DaysDD", "joinDD"],
+        ["load2DD", "projectItemsDD"], ["projectItemsDD", "selectCanceledDD"], ["selectCanceledDD", "joinDD"],
+        ["joinDD", "projectResultDD"]
     ]
 }
