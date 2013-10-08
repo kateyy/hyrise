@@ -1,0 +1,46 @@
+{
+  "operators" : {
+    "loadTable" :{
+      "type": "TableLoad",
+      "table": "order_line",
+      "filename": "tpcc/order_line.csv",
+      "header": "tpcc/order_line_header.tbl",
+      "delimiter": "|"
+    },
+    "select":{
+      "type":"SimpleTableScan",
+      "positions": "true",
+      "predicates": [
+        {"type":2, "in":0, "f": "ol_delivery_d", "vtype":2, "value":"2007-01-02 00:00:00.000000"}
+      ]
+    },
+    "project":{
+      "type":"ProjectionScan",
+      "fields":["ol_number","ol_quantity","ol_delivery_d","ol_amount"]
+    },
+    "hash":{
+      "type":"HashBuild",
+      "key": "groupby",
+      "fields":["ol_number"]
+    },
+    "groupBy":{
+      "type": "GroupByScan",
+      "fields": ["ol_number"],
+      "functions":[
+        {"type":"SUM", "field":"ol_quantity", "as":"sum_qty"},
+        {"type":"SUM", "field":"ol_amount", "as":"sum_amount"},
+        {"type":"AVG", "field":"ol_quantity", "as":"avg_qty"},
+        {"type":"AVG", "field":"ol_amount", "as":"avg_amount"},
+        {"type":"COUNT", "field":"ol_amount", "as":"count_order"}
+      ]
+    },
+    "sort":{
+      "type":"SortScan",
+      "field":"ol_number"
+    }
+  },
+  "edges": [
+    ["loadTable","select"],["select","project"],["project","hash"],
+      ["hash","groupBy"],["project","groupBy"],["groupBy","sort"]
+  ]
+}
