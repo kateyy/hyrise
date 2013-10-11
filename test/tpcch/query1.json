@@ -1,17 +1,17 @@
 {
   "operators" : {
     "loadTable" :{
-      "type": "TableLoad",
-      "table": "order_line",
-      "filename": "tpcc/order_line.csv",
-      "header": "tpcc/order_line_header.csv",
+      "type"     : "TableLoad",
+      "table"    : "orderline",
+      "filename" : "tpcc/order_line.csv",
+      "header"   : "tpcc/order_line_header.csv",
       "delimiter": "|"
     },
     "select":{
       "type":"SimpleTableScan",
       "positions": "true",
       "predicates": [
-        {"type":2, "in":0, "f": "ol_delivery_d", "vtype":2, "value":"2007-01-02 00:00:00.000000"}
+        {"type":"GT", "in":0, "f": "ol_delivery_d", "vtype":2, "value":"2013-08-22 10:12:51.367618"}
       ]
     },
     "project":{

@@ -3,65 +3,65 @@
         "load_customer": {
             "type": "TableLoad",
             "table": "customer",
-            "filename": "customer.csv",
-            "header": "customer_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/customer.csv",
+            "header": "tpcc/customer_header.csv",
+            "delimiter": "|"
             },
         "load_district": {
             "type": "TableLoad",
             "table": "district",
-            "filename": "district.csv",
-            "header": "district_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/district.csv",
+            "header": "tpcc/district_header.csv",
+            "delimiter": "|"
             },
         "load_history": {
             "type": "TableLoad",
             "table": "history",
-            "filename": "history.csv",
-            "header": "history_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/history.csv",
+            "header": "tpcc/history_header.csv",
+            "delimiter": "|"
             },
         "load_item": {
             "type": "TableLoad",
             "table": "item",
-            "filename": "item.csv",
-            "header": "item_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/item.csv",
+            "header": "tpcc/item_header.csv",
+            "delimiter": "|"
             },
         "load_new_order": {
             "type": "TableLoad",
             "table": "new_order",
-            "filename": "new_order.csv",
-            "header": "new_order_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/new_order.csv",
+            "header": "tpcc/new_order_header.csv",
+            "delimiter": "|"
             },
         "load_order_line": {
             "type": "TableLoad",
             "table": "order_line",
-            "filename": "order_line.csv",
-            "header": "order_line_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/order_line.csv",
+            "header": "tpcc/order_line_header.csv",
+            "delimiter": "|"
             },
         "load_orders": {
             "type": "TableLoad",
             "table": "orders",
-            "filename": "orders.csv",
-            "header": "orders_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/orders.csv",
+            "header": "tpcc/orders_header.csv",
+            "delimiter": "|"
             },
         "load_stock": {
             "type": "TableLoad",
             "table": "stock",
-            "filename": "stock.csv",
-            "header": "stock_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/stock.csv",
+            "header": "tpcc/stock_header.csv",
+            "delimiter": "|"
             },
         "load_warehouse": {
             "type": "TableLoad",
             "table": "warehouse",
-            "filename": "warehouse.csv",
-            "header": "warehouse_header.csv",
-            "delimiter": ","
+            "filename": "tpcc/warehouse.csv",
+            "header": "tpcc/warehouse_header.csv",
+            "delimiter": "|"
         }
     },
     "edges" : []
