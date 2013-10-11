@@ -1,0 +1,102 @@
+{
+   "affectedRows" : 0,
+   "generatedKeys" : [],
+   "header" : [
+      "ol_number",
+      "sum_qty",
+      "sum_amount",
+      "avg_qty",
+      "avg_amount",
+      "count_order"
+   ],
+   "performanceData" : [
+      {
+         "data" : 0,
+         "duration" : 0,
+         "endTime" : 5.5474470,
+         "executingThread" : "139721089120000",
+         "id" : "requestParse",
+         "name" : "RequestParseTask",
+         "papi_event" : "NO_PAPI",
+         "startTime" : 0.0
+      },
+      {
+         "data" : 587,
+         "duration" : 587,
+         "endTime" : 9.2546330,
+         "executingThread" : "139721089120000",
+         "id" : "groupBy",
+         "name" : "GroupByScan",
+         "papi_event" : "PAPI_TOT_INS",
+         "startTime" : 8.5543330
+      },
+      {
+         "data" : 91,
+         "duration" : 91,
+         "endTime" : 8.4037550,
+         "executingThread" : "139721089120000",
+         "id" : "hash",
+         "name" : "HashBuild",
+         "papi_event" : "PAPI_TOT_INS",
+         "startTime" : 8.229291999999999
+      },
+      {
+         "data" : 77,
+         "duration" : 77,
+         "endTime" : 5.7825340,
+         "executingThread" : "139721089120000",
+         "id" : "loadTable",
+         "name" : "TableLoad",
+         "papi_event" : "PAPI_TOT_INS",
+         "startTime" : 5.6419430
+      },
+      {
+         "data" : 83,
+         "duration" : 83,
+         "endTime" : 8.1544220,
+         "executingThread" : "139721089120000",
+         "id" : "project",
+         "name" : "ProjectionScan",
+         "papi_event" : "PAPI_TOT_INS",
+         "startTime" : 7.8917480
+      },
+      {
+         "data" : 1504,
+         "duration" : 1504,
+         "endTime" : 7.6389230,
+         "executingThread" : "139721089120000",
+         "id" : "select",
+         "name" : "SimpleTableScan",
+         "papi_event" : "PAPI_TOT_INS",
+         "startTime" : 5.9860530
+      },
+      {
+         "data" : 191,
+         "duration" : 191,
+         "endTime" : 9.999910,
+         "executingThread" : "139721089120000",
+         "id" : "sort",
+         "name" : "SortScan",
+         "papi_event" : "PAPI_TOT_INS",
+         "startTime" : 9.5089250
+      },
+      {
+         "duration" : 891,
+         "endTime" : 11.0971850,
+         "executingThread" : "139721089120000",
+         "id" : "respond",
+         "name" : "ResponseTask",
+         "startTime" : 10.1418970
+      }
+   ],
+   "real_size" : 6,
+   "rows" : [
+      [ 4, 5, 0.0, 5.0, 0.0, 1 ],
+      [ 5, 5, 0.0, 5.0, 0.0, 1 ],
+      [ 6, 5, 0.0, 5.0, 0.0, 1 ],
+      [ 7, 5, 0.0, 5.0, 0.0, 1 ],
+      [ 8, 5, 0.0, 5.0, 0.0, 1 ],
+      [ 9, 5, 0.0, 5.0, 0.0, 1 ]
+   ],
+   "session_context" : 4
+}
