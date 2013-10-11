@@ -4,7 +4,7 @@
       "type": "TableLoad",
       "table": "order_line",
       "filename": "tpcc/order_line.csv",
-      "header": "tpcc/order_line_header.tbl",
+      "header": "tpcc/order_line_header.csv",
       "delimiter": "|"
     },
     "select":{
