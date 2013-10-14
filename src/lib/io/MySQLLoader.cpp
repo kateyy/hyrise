@@ -93,7 +93,8 @@ std::map<std::string, std::pair<hyrise::types::type_t, conversion_func> > transl
     ("double",   make_pair(hyrise::types::float_t, double_to_float))
     ("date",     make_pair(hyrise::types::integer_t, date_to_int))
     ("time",     make_pair(hyrise::types::string_t, var_to_string))
-    ("datetime", make_pair(hyrise::types::string_t, var_to_string));
+    ("datetime", make_pair(hyrise::types::string_t, var_to_string))
+    ("decimal",  make_pair(hyrise::types::float_t, double_to_float));
 
 std::shared_ptr<AbstractTable> MySQLInput::load(
   std::shared_ptr<AbstractTable> intable,
