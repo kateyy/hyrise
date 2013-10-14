@@ -1,0 +1,39 @@
+{
+  "operators" : {
+    "loadTable" :{
+      "type"     : "TableLoad",
+      "table"    : "orderline",
+      "filename" : "test/tpcc/order_line.csv",
+      "header"   : "test/tpcc/order_line_header.csv",
+      "delimiter": "|"
+    },
+    "select":{
+      "type":"SimpleTableScan",
+      "positions": "true",
+      "predicates": [
+        {"type":"AND"},
+        {"type":"AND"},
+        {"type":"AND"},
+        {"type":"GT", "in":0, "f":"ol_delivery_d","vtype":2, "value":"2013-08-22 10:12:50.000000"},
+        {"type":"LT", "in":0, "f": "ol_delivery_d", "vtype":2, "value":"2013-10-30 10:12:51.000000"},
+        {"type":"GT", "in":0, "f": "ol_quantity", "vtype":0, "value":0},
+        {"type":"LT", "in":0, "f": "ol_quantity", "vtype":0, "value":100001}
+      ]
+    },
+    "groupBy":{
+      "type": "GroupByScan",
+      "fields": [],
+      "functions":[
+        {"type":"SUM", "field":"ol_amount", "as":"revenue"}
+      ]
+    },
+    "project":{
+      "type":"ProjectionScan",
+      "fields":["revenue"]
+    }
+  },
+  "edges": [
+    ["loadTable","select"],
+      ["select","groupBy"],["groupBy","project"]
+  ]
+}
