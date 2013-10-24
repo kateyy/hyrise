@@ -42,7 +42,7 @@ public:
   virtual ~LikeExpression() { }
 
   inline virtual bool operator()(size_t row) {
-    std::string currentValue = std::string(table->template getValue<hyrise_string_t>(field, row));
+    std::string currentValue = std::string(table->getValue<hyrise_string_t>(field, row));
 
     return boost::regex_match(currentValue, regExpr);
   }
