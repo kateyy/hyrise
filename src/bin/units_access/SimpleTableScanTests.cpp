@@ -57,5 +57,34 @@ TEST_F(SimpleTableScanTests, parallelized_simple_table_scan) {
   ASSERT_EQ(100, result->getValue<storage::hyrise_int_t>(0, 0));
 }
 
+TEST_F(SimpleTableScanTests, basic_like_test) {
+  storage::c_atable_ptr_t t = Loader::shortcuts::load("test/students.tbl");
+  storage::c_atable_ptr_t expected = Loader::shortcuts::load("test/students_like.tbl");
+
+  ASSERT_TRUE(expected != nullptr);
+  ASSERT_TRUE(t != nullptr);
+
+  SimpleTableScan like1;
+  like1.addInput(t);
+  like1.setPredicate(new LikeExpression(
+                      0, field_name_t("name"), hyrise_string_t("\% Sch\%")));
+  like1.execute();
+
+  auto result1 = like1.getResultTable();
+
+  ASSERT_TRUE(result1 != nullptr);
+  ASSERT_TABLE_EQUAL(expected, result1);
+
+  SimpleTableScan like2;
+  like2.addInput(t);
+  like2.setPredicate(new LikeExpression(
+                      0, field_name_t("city"), hyrise_string_t("Be_l_n")));
+  like2.execute();
+
+  auto result2 = like2.getResultTable();
+
+  ASSERT_EQ(34u, result2->size());
+}
+
 }
 }
