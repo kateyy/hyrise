@@ -202,7 +202,7 @@ RESULT_DIR := $(PROJECT_ROOT)/build
 OBJDIR := $(PROJECT_ROOT)/.build/$(BLD)_$(OSNAME)
 
 CPPFLAGS.debug += -DEXPENSIVE_ASSERTIONS
-CPPFLAGS.release += -DEXPENSIVE_TESTS -DPRODUCTION
+CPPFLAGS.release += -DEXPENSIVE_TESTS -DPRODUCTION -DNDEBUG
 
 CFLAGS.debug +=
 CFLAGS.release +=
@@ -212,7 +212,7 @@ LDFLAGS.release +=
 
 COMMON_FLAGS.debug += -O0
 COMMON_FLAGS.release += -O3 -march=native
-COMMON_FLAGS += -g -Wall -Wextra -Wno-attributes -Wno-unused-parameter $(COMMON_FLAGS.$(BLD))
+COMMON_FLAGS += -g -Wall -Wextra -Wno-attributes -Wno-unused-parameter -pthread $(COMMON_FLAGS.$(BLD))
 
 CPPFLAGS += -MMD -pipe $(CPPFLAGS.$(BLD))
 CFLAGS += $(COMMON_FLAGS) $(CFLAGS.$(BLD))
