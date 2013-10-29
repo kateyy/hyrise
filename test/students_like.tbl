@@ -1,0 +1,8 @@
+name|student_number|city|grade
+STRING|INTEGER|STRING|FLOAT
+0_R|0_R|0_R|0_R
+===
+Martina Schmitt|703591|Berlin|2.3
+Robert Scheel|703594|Berlin|1.7
+Karin Schulze|703597|Potsdam|3
+Frank Schweitzer|703598|Frohnau|3.3
