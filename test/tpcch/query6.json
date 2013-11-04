@@ -5,7 +5,7 @@
       "table"    : "orderline",
       "filename" : "test/tpcc/order_line.csv",
       "header"   : "test/tpcc/order_line_header.tbl",
-      "delimiter": "|"
+      "delimiter": ","
     },
     "select":{
       "type":"SimpleTableScan",
