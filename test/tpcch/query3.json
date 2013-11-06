@@ -1,0 +1,105 @@
+{
+  "operators" : {
+    "loadTableCustomer" :{
+      "type"     : "TableLoad",
+      "table"    : "customer",
+      "filename" : "tpcc/customer.csv",
+      "header"   : "tpcc/customer_header.tbl",
+      "delimiter": ","
+    },
+    // "loadTableNeworder" :{
+    //   "type"     : "TableLoad",
+    //   "table"    : "neworder",
+    //   "filename" : "tpcc/new_order.csv",
+    //   "header"   : "tpcc/new_order_header.tbl",
+    //   "delimiter": ","
+    // },
+    "loadTableOrders" :{
+      "type"     : "TableLoad",
+      "table"    : "orders",
+      "filename" : "tpcc/orders.csv",
+      "header"   : "tpcc/orders_header.tbl",
+      "delimiter": ","
+    },
+    // "loadTableOrderline" :{
+    //   "type"     : "TableLoad",
+    //   "table"    : "orderline",
+    //   "filename" : "tpcc/order_line.csv",
+    //   "header"   : "tpcc/order_line_header.tbl",
+    //   "delimiter": ","
+    // },
+    "selectCustomer":{
+      "type":"SimpleTableScan",
+      "positions": "true",
+      "predicates": [
+        {"type":"LIKE", "in":0, "f": "C_STATE", "vtype":2, "value":"%2"}
+      ]
+    },
+    "selectOrders":{
+      "type":"SimpleTableScan",
+      "positions": "true",
+      "predicates": [
+        {"type":"GT", "in":0, "f": "O_ENTRY_D", "vtype":2, "value":"2013-09-15"}
+      ]
+    },
+    "joinCustomerOrders": {
+    "type":"JoinScan",
+    "predicates": [
+        // {"type": "AND"},
+          {   
+            "type": 3,
+              "input_left": 0,
+              "field_left": "C_ID",
+              "input_right": 1,
+              "field_right": "O_C_ID"
+          }
+          // {"type": "AND"},
+          //   {   
+          //     "type": "EXP_EQ",
+          //       "input_left": 0,
+          //       "field_left": "C_W_ID",
+          //       "input_right": 1,
+          //       "field_right": "O_W_ID"
+          //   },
+          //   {   
+          //     "type": "EXP_EQ",
+          //       "input_left": 0,
+          //       "field_left": "C_D_ID",
+          //       "input_right": 1,
+          //       "field_right": "O_D_ID"
+          //   }
+          ]
+    }
+    // "project":{
+    //   "type":"ProjectionScan",
+    //   "fields":["OL_NUMBER","OL_QUANTITY","OL_DELIVERY_D","OL_AMOUNT"]
+    // },
+    // "hash":{
+    //   "type":"HashBuild",
+    //   "key": "groupby",
+    //   "fields":["OL_NUMBER"]
+    // },
+    // "groupBy":{
+    //   "type": "GroupByScan",
+    //   "fields": ["OL_NUMBER"],
+    //   "functions":[
+    //     {"type":"SUM", "field":"OL_QUANTITY", "as":"SUM_QTY"},
+    //     {"type":"SUM", "field":"OL_AMOUNT", "as":"SUM_AMOUNT"},
+    //     {"type":"AVG", "field":"OL_QUANTITY", "as":"AVG_QTY"},
+    //     {"type":"AVG", "field":"OL_AMOUNT", "as":"AVG_AMOUNT"},
+    //     {"type":"COUNT", "field":"OL_AMOUNT", "as":"COUNT_ORDER"}
+    //   ]
+    // },
+    // "sort":{
+    //   "type":"SortScan",
+    //   "field":"OL_NUMBER"
+    // }
+  },
+  "edges": [
+    ["loadTableCustomer","selectCustomer"],["loadTableOrders","selectOrders"],
+    ["selectCustomer","joinCustomerOrders"],["selectOrders","joinCustomerOrders"]
+
+    // ["select","project"],["project","hash"],
+    //   ["hash","groupBy"],["project","groupBy"],["groupBy","sort"]
+  ]
+}
