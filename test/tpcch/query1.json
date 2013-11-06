@@ -1,17 +1,14 @@
 {
   "operators" : {
-    "loadTable" :{
-      "type"     : "TableLoad",
-      "table"    : "orderline",
-      "filename" : "tpcc/order_line.csv",
-      "header"   : "tpcc/order_line_header.tbl",
-      "delimiter": ","
-    },
+    "getTable" :{
+      "type" : "GetTable",
+      "name" : "ORDER_LINE"
+      },
     "select":{
       "type":"SimpleTableScan",
       "positions": "true",
       "predicates": [
-        {"type":"GT", "in":0, "f": "OL_DELIVERY_D", "vtype":2, "value":"2013-08-22 10:12:51.367618"}
+        {"type":"GT", "in":0, "f": "OL_DELIVERY_D", "vtype":2, "value":"2013-09-15"}
       ]
     },
     "project":{
@@ -27,11 +24,11 @@
       "type": "GroupByScan",
       "fields": ["OL_NUMBER"],
       "functions":[
-        {"type":"SUM", "field":"OL_QUANTITY", "as":"SUM_QTY"},
-        {"type":"SUM", "field":"OL_AMOUNT", "as":"SUM_AMOUNT"},
-        {"type":"AVG", "field":"OL_QUANTITY", "as":"AVG_QTY"},
-        {"type":"AVG", "field":"OL_AMOUNT", "as":"AVG_AMOUNT"},
-        {"type":"COUNT", "field":"OL_AMOUNT", "as":"COUNT_ORDER"}
+        {"type":"SUM", "field":"OL_QUANTITY", "as":"sum_qty"},
+        {"type":"SUM", "field":"OL_AMOUNT", "as":"sum_amount"},
+        {"type":"AVG", "field":"OL_QUANTITY", "as":"avg_qty"},
+        {"type":"AVG", "field":"OL_AMOUNT", "as":"avg_amount"},
+        {"type":"COUNT", "field":"OL_AMOUNT", "as":"count_order"}
       ]
     },
     "sort":{
@@ -40,7 +37,7 @@
     }
   },
   "edges": [
-    ["loadTable","select"],["select","project"],["project","hash"],
+    ["getTable","select"],["select","project"],["project","hash"],
       ["hash","groupBy"],["project","groupBy"],["groupBy","sort"]
   ]
 }
