@@ -35,19 +35,14 @@ TEST_F(TpcchQueryTest, analyt_query1) {
   ASSERT_TABLE_EQUAL(out, reference());
 }
 
-TEST_F(TpcchQueryTest, DISABLED_analyt_query3) {
-  // loadReference("tpcch/query3_result.tbl");
+TEST_F(TpcchQueryTest, analyt_query3) {
+  loadReference("tpcch/query3_result.tbl");
 
-  std::cout << "ping" << std::endl;
-  std::string query = loadFromFile("test/tpcch/query3.json");
-  std::cout << "ping2" << std::endl;
-  // ... null value at some point...
-  // problem occurs only when executing here, (query3 works with curl)
-  const auto& out = executeAndWait(query);
-  std::cout << "ping3" << std::endl;
+  const auto& out = executeAndWait(loadFromFile("test/tpcch/query3.json"));
+
   ASSERT_TRUE(out != nullptr);
 
-  // ASSERT_TABLE_EQUAL(out, sm->getTable("expectedTable"));
+  ASSERT_TABLE_EQUAL(out, reference());
 }
 
 TEST_F(TpcchQueryTest, analyt_query6) {

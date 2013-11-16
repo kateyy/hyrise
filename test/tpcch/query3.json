@@ -20,7 +20,7 @@
       "type":"SimpleTableScan",
       "positions": "true",
       "predicates": [
-        {"type":"LIKE", "in":0, "f": "C_STATE", "vtype":2, "value":"%2"}
+        {"type":"LIKE", "in":0, "f": "C_STATE", "vtype":2, "value":".*2"}
       ]
     },
     "selectOrders":{
