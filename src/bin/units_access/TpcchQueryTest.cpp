@@ -1,6 +1,5 @@
 // Copyright (c) 2012 Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH. All rights reserved.
 #include "testing/test.h"
-#include "io/StorageManager.h"
 
 #include "helper.h"
 
@@ -16,26 +15,23 @@ template <typename Query>
 class TpcchQueryTest : public AccessTest {
 protected:
   virtual void SetUp() {
-    sm = StorageManager::getInstance();
+    AccessTest::SetUp();
+    
     // load input tables
     executeAndWait(loadFromFile("test/tpcc/load_tpcc_tables.json"));
 
     // load expected output table
+    StorageManager *sm = StorageManager::getInstance();
     sm->loadTableFile("refTable", "tpcch/query"+std::to_string(Query::id())+"_result.tbl");
 
     // load query from file
     query = loadFromFile("test/tpcch/query"+std::to_string(Query::id())+".json");
   }
 
-  virtual void TearDown() {
-    sm->removeAll();
-  }
-
   std::shared_ptr<AbstractTable> reference() {
+    StorageManager *sm = StorageManager::getInstance();
     return sm->getTable("refTable");
   }
-
-  StorageManager * sm;
   std::string query;
 };
 
