@@ -7,62 +7,54 @@
 namespace hyrise {
 namespace access {
 
+template <int I>
+struct QueryId {
+  static int id() { return I; }
+};
+
+template <typename Query>
 class TpcchQueryTest : public AccessTest {
 protected:
   virtual void SetUp() {
     sm = StorageManager::getInstance();
+    // load input tables
     executeAndWait(loadFromFile("test/tpcc/load_tpcc_tables.json"));
+
+    // load expected output table
+    sm->loadTableFile("refTable", "tpcch/query"+std::to_string(Query::id())+"_result.tbl");
+
+    // load query from file
+    query = loadFromFile("test/tpcch/query"+std::to_string(Query::id())+".json");
   }
+
   virtual void TearDown() {
     sm->removeAll();
   }
-  void loadReference(std::string fileName) {
-    sm->loadTableFile("refTable", fileName);
-  }
+
   std::shared_ptr<AbstractTable> reference() {
     return sm->getTable("refTable");
   }
+
   StorageManager * sm;
+  std::string query;
 };
 
-TEST_F(TpcchQueryTest, analyt_query1) {
-  loadReference("tpcch/query1_result.tbl");
+// Define here which queries we want to execute
+typedef ::testing::Types<
+  QueryId<1>,
+  QueryId<3>,
+  QueryId<6>,
+  QueryId<18>
+> Queries;
 
-  const auto& out = executeAndWait(loadFromFile("test/tpcch/query1.json"));
+TYPED_TEST_CASE(TpcchQueryTest, Queries);
 
-  ASSERT_TRUE(out != nullptr);
-
-  ASSERT_TABLE_EQUAL(out, reference());
-}
-
-TEST_F(TpcchQueryTest, analyt_query3) {
-  loadReference("tpcch/query3_result.tbl");
-
-  const auto& out = executeAndWait(loadFromFile("test/tpcch/query3.json"));
+TYPED_TEST(TpcchQueryTest, query_execute_test) {
+  const auto& out = executeAndWait(this->query);
 
   ASSERT_TRUE(out != nullptr);
 
-  ASSERT_TABLE_EQUAL(out, reference());
-}
-
-TEST_F(TpcchQueryTest, analyt_query6) {
-  loadReference("tpcch/query6_result.tbl");
-
-  const auto& out = executeAndWait(loadFromFile("test/tpcch/query6.json"));
-
-  ASSERT_TRUE(out != nullptr);
-
-  ASSERT_TABLE_EQUAL(out, reference());
-}
-
-TEST_F(TpcchQueryTest, analyt_query18) {
-  loadReference("tpcch/query18_result.tbl");
-
-  const auto& out = executeAndWait(loadFromFile("test/tpcch/query18.json"));
-
-  ASSERT_TRUE(out != nullptr);
-
-  ASSERT_TABLE_EQUAL(out, reference());
+  ASSERT_TABLE_EQUAL(out, this->reference());
 }
 
 }
