@@ -69,10 +69,22 @@ std::shared_ptr<PlanOperation> JoinScan::parse(const Json::Value &v) {
 
   for (unsigned i = 0; i < v["predicates"].size(); ++i) {
     Json::Value p = v["predicates"][i];
-    if (parseExpressionType(p["type"]) == EXP_EQ) {
-      s->addJoinClause<int>(p);
-    } else {
-      s->addCombiningClause(ExpressionType(p["type"].asUInt()));
+    switch (parseExpressionType(p["type"])){
+      case EXP_EQ: 
+          switch (p["vtype"].asUInt()){
+            case 0: s->addEqualJoinClause<hyrise_int_t>(p); break;
+            case 1: s->addEqualJoinClause<hyrise_float_t>(p); break;
+            case 2: s->addEqualJoinClause<hyrise_string_t>(p); break;
+          };
+          break;
+      case EXP_GT: 
+          switch (p["vtype"].asUInt()){
+            case 0: s->addGreaterThanJoinClause<hyrise_int_t>(p); break;
+            case 1: s->addGreaterThanJoinClause<hyrise_float_t>(p); break;
+            case 2: s->addGreaterThanJoinClause<hyrise_string_t>(p); break;
+          };
+          break;
+      default: s->addCombiningClause(ExpressionType(p["type"].asUInt()));
     }
   }
 

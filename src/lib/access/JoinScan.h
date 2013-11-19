@@ -39,12 +39,19 @@ public:
   static std::shared_ptr<PlanOperation> parse(const Json::Value &v);
   const std::string vname();
   template<typename T>
-  void addJoinClause(const size_t input_left,
+  void addEqualJoinClause(const size_t input_left,
                      const storage::field_t field_left,
                      const size_t input_right,
                      const storage::field_t field_right);
   template<typename T>
-  void addJoinClause(const Json::Value &value);
+  void addEqualJoinClause(const Json::Value &value);
+  template<typename T>
+  void addGreaterThanJoinClause(const size_t input_left,
+                     const storage::field_t field_left,
+                     const size_t input_right,
+                     const storage::field_t field_right);
+  template<typename T>
+  void addGreaterThanJoinClause(const Json::Value &value);
   void addCombiningClause(const ExpressionType t);
 
 private:
@@ -55,7 +62,20 @@ private:
 };
 
 template<typename T>
-void JoinScan::addJoinClause(const size_t input_left,
+void JoinScan::addEqualJoinClause(const size_t input_left,
+                             const storage::field_t field_left,
+                             const size_t input_right,
+                             const storage::field_t field_right) {
+  auto expr1 = new EqualsJoinExpression<T>(input_left,
+                                           field_left,
+                                           input_right,
+                                           field_right);
+  addJoinExpression(expr1);
+}
+
+
+template<typename T>
+void JoinScan::addGreaterThanJoinClause(const size_t input_left,
                              const storage::field_t field_left,
                              const size_t input_right,
                              const storage::field_t field_right) {
@@ -67,8 +87,14 @@ void JoinScan::addJoinClause(const size_t input_left,
 }
 
 template<typename T>
-void JoinScan::addJoinClause(const Json::Value &value) {
+void JoinScan::addEqualJoinClause(const Json::Value &value) {
   EqualsJoinExpression<T> *expr1 = EqualsJoinExpression<T>::parse(value);
+  addJoinExpression(expr1);
+}
+
+template<typename T>
+void JoinScan::addGreaterThanJoinClause(const Json::Value &value) {
+  GreaterThanJoinExpression<T> *expr1 = GreaterThanJoinExpression<T>::parse(value);
   addJoinExpression(expr1);
 }
 

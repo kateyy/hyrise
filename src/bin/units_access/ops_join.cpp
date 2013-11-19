@@ -21,8 +21,8 @@ TEST_F(JoinTests, DISABLED_join_column_renaming) {
   join->addInput(table1);
   join->addInput(table2);
   join->addCombiningClause(AND);
-  join->addJoinClause<int>(0, 0, 1, 0);
-  join->addJoinClause<std::string>(0, 1, 1, 1);
+  join->addEqualJoinClause<int>(0, 0, 1, 0);
+  join->addEqualJoinClause<std::string>(0, 1, 1, 1);
   const auto& table1_join_table2 = join->execute()->getResultTable();
 
   ASSERT_EQ(table1_join_table2->metadataAt(0)->getName(), std::string("year") + RENAMED_COLUMN_APPENDIX_LEFT);
@@ -54,8 +54,8 @@ TEST_F(JoinTests, join_exchange_rates) {
   join->addInput(table1);
   join->addInput(filtered_rates);
   join->addCombiningClause(AND);
-  join->addJoinClause<int>(0, 0, 1, 0);
-  join->addJoinClause<std::string>(0, 1, 1, 1);
+  join->addEqualJoinClause<int>(0, 0, 1, 0);
+  join->addEqualJoinClause<std::string>(0, 1, 1, 1);
 
 
   const auto& out = join->execute()->getResultTable();

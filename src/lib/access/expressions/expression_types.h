@@ -7,7 +7,7 @@
 
 #include <json.h>
 
-enum ExpressionType { AND = 0, OR = 1, NOT = 2, EXP_EQ = 3 };
+enum ExpressionType { AND = 0, OR = 1, NOT = 2, EXP_EQ = 3, EXP_GT = 4 };
 
 struct PredicateType {
   typedef enum {
