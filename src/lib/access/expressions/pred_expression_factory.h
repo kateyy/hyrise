@@ -13,11 +13,21 @@
     return new EXPRESSION<ValueType>(_input_index, _field, json_converter::convert<ValueType>(_value)); \
   break;
 
+// for expressions that support only a specific value type
 #define GENERATE_EXPRESSION_OF_TYPE(EXPRESSION, TYPE)  case PredicateType::EXPRESSION: \
   if (_field_name.size() > 0)                                           \
     return new EXPRESSION(_input_index, _field_name, json_converter::convert<TYPE>(_value)); \
   else                                                                  \
     return new EXPRESSION(_input_index, _field, json_converter::convert<TYPE>(_value)); \
+  break;
+
+// for expressions that need a specific type of input value
+// e.g. input type string '1;2;3' can later be interpreted as three ints
+#define GENERATE_EXPRESSION_OF_INPUT_TYPE(EXPRESSION, INPUTTYPE)  case PredicateType::EXPRESSION: \
+  if (_field_name.size() > 0)                                           \
+    return new EXPRESSION<ValueType>(_input_index, _field_name, json_converter::convert<INPUTTYPE>(_value)); \
+  else                                                                  \
+    return new EXPRESSION<ValueType>(_input_index, _field, json_converter::convert<INPUTTYPE>(_value)); \
   break;
 
 #define GENERATE_GENERIC_EXPRESSION(NAME, EXPRESSION, OPERATOR)  case PredicateType::NAME: \
@@ -72,6 +82,7 @@ struct expression_factory {
       GENERATE_EXPRESSION(LessThanExpressionRaw);
       GENERATE_EXPRESSION(GreaterThanExpressionRaw);
       GENERATE_EXPRESSION_OF_TYPE(LikeExpression, hyrise_string_t);
+      GENERATE_EXPRESSION_OF_INPUT_TYPE(InExpression, hyrise_string_t);
 
       GENERATE_GENERIC_EXPRESSION(EqualsExpressionValue, GenericExpressionValue, std::equal_to);
       GENERATE_GENERIC_EXPRESSION(LessThanExpressionValue, GenericExpressionValue, std::less);

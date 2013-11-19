@@ -1,38 +1,26 @@
 {
   "operators" : {
-    "loadTableCustomer" :{
-      "type"     : "TableLoad",
-      "table"    : "customer",
-      "filename" : "tpcc/customer.csv",
-      "header"   : "tpcc/customer_header.tbl",
-      "delimiter": ","
+    "getTableCustomer" :{
+      "type"     : "GetTable",
+      "name"    : "CUSTOMER"
     },
-    "loadTableNeworder" :{
-      "type"     : "TableLoad",
-      "table"    : "neworder",
-      "filename" : "tpcc/new_order.csv",
-      "header"   : "tpcc/new_order_header.tbl",
-      "delimiter": ","
+    "getTableNeworder" :{
+      "type"     : "GetTable",
+      "name"    : "NEW_ORDER"
     },
-    "loadTableOrders" :{
-      "type"     : "TableLoad",
-      "table"    : "orders",
-      "filename" : "tpcc/orders.csv",
-      "header"   : "tpcc/orders_header.tbl",
-      "delimiter": ","
+    "getTableOrders" :{
+      "type"     : "GetTable",
+      "name"    : "ORDERS"
     },
-    "loadTableOrderline" :{
-      "type"     : "TableLoad",
-      "table"    : "orderline",
-      "filename" : "tpcc/order_line.csv",
-      "header"   : "tpcc/order_line_header.tbl",
-      "delimiter": ","
+    "getTableOrderline" :{
+      "type"     : "GetTable",
+      "name"    : "ORDER_LINE"
     },
     "selectCustomer":{
       "type":"SimpleTableScan",
       "positions": "true",
       "predicates": [
-        {"type":"LIKE", "in":0, "f": "C_STATE", "vtype":2, "value":"%2"}
+        {"type":"LIKE", "in":0, "f": "C_STATE", "vtype":2, "value":".*2"}
       ]
     },
     "selectOrders":{
@@ -148,10 +136,10 @@
     }
   },
   "edges": [
-    ["loadTableCustomer","selectCustomer"],["loadTableOrders","selectOrders"],
+    ["getTableCustomer","selectCustomer"],["getTableOrders","selectOrders"],
     ["selectCustomer","joinCustomerOrders"],["selectOrders","joinCustomerOrders"],
-    ["joinCustomerOrders","joinNeworder"],["loadTableNeworder","joinNeworder"],
-    ["joinNeworder","joinOrderline"],["loadTableOrderline","joinOrderline"],
+    ["joinCustomerOrders","joinNeworder"],["getTableNeworder","joinNeworder"],
+    ["joinNeworder","joinOrderline"],["getTableOrderline","joinOrderline"],
     ["joinOrderline","project"],
     ["project","hash"],["hash","groupBy"],["project","groupBy"],
     ["groupBy", "sort"]

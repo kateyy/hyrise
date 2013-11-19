@@ -1,12 +1,9 @@
 {
   "operators" : {
-    "loadTable" :{
-      "type"     : "TableLoad",
-      "table"    : "orderline",
-      "filename" : "test/tpcc/order_line.csv",
-      "header"   : "test/tpcc/order_line_header.tbl",
-      "delimiter": ","
-    },
+    "getTableOrderLine" :{
+      "type" : "GetTable",
+      "name" : "ORDER_LINE"
+      },
     "select":{
       "type":"SimpleTableScan",
       "positions": "true",
@@ -33,7 +30,7 @@
     }
   },
   "edges": [
-    ["loadTable","select"],
+    ["getTableOrderLine","select"],
       ["select","groupBy"],["groupBy","project"]
   ]
 }
