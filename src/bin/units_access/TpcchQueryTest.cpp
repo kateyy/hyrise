@@ -40,7 +40,8 @@ typedef ::testing::Types<
   QueryId<1>,
   QueryId<3>,
   QueryId<6>,
-  QueryId<18>
+  QueryId<18>,
+  QueryId<19>
 > Queries;
 
 TYPED_TEST_CASE(TpcchQueryTest, Queries);
