@@ -5,44 +5,63 @@
 #include "pred_common.h"
 #include <vector>
 #include <algorithm>
+#include <json.h>
+#include "../json_converters.h"
 #include "helper/stringhelpers.h"
+
+///
+/// IN Expression for comparing a column to multiple values
+/// "value" is an array containing the values
+/// Example :
+///   "select" : {
+///         "type" : "SimpleTableScan",
+///         "predicates":[{ "type" : "IN", "in" : 0, "f" : "quarter", "vtype" : 0, "value": [2, 3, 4] }]
+///     }
+/// This is equal to the mysql syntax: SELECT * FROM table WHERE quarter IN(2,3,4);
+///
 
 template <typename T>
 class InExpression : public SimpleFieldExpression {
 public:
-  InExpression(size_t i, field_t f, hyrise_string_t value):
-      SimpleFieldExpression(i, f),
-      values(parseValues(value))
+  InExpression(size_t i, field_t f, const Json::Value& value):
+    SimpleFieldExpression(i, f),
+    values(getValues(value))
   {}
 
-  InExpression(size_t i, field_name_t f, hyrise_string_t value):
-      SimpleFieldExpression(i, f),
-      values(parseValues(value))
+  InExpression(size_t i, field_name_t f, const Json::Value& value):
+    SimpleFieldExpression(i, f),
+    values(getValues(value))
   {}
 
-  InExpression(hyrise::storage::c_atable_ptr_t _table, field_t _field, hyrise_string_t value):
-      SimpleFieldExpression(_table, _field),
-      values(parseValues(value))
+  InExpression(hyrise::storage::c_atable_ptr_t _table, field_t _field, const Json::Value& value):
+    SimpleFieldExpression(_table, _field),
+    values(getValues(value))
   {}
 
-  virtual ~InExpression() { }
-
+  ///
+  /// @return true if the value at column[field,row] matches any values of the list named "values"
+  ///
   inline virtual bool operator()(size_t row) {
     T currentValue = table->getValue<T>(field, row);
-    // check if we can find currentValue in our list of values
     return std::find(values.cbegin(), values.cend(), currentValue) != values.cend();
   }
 
-protected:
+private:
   const std::vector<T> values;
-  const std::vector<T> parseValues(const hyrise_string_t inValuesString) const {
-    std::vector<hyrise_string_t> strings;
-    splitString(strings, inValuesString, ";");
-    std::vector<T> result;
-    for (const hyrise_string_t & s: strings) {
-      result.push_back(fromString<T>(s));
+  ///
+  /// converts the string containing the values to a vector of values of the right type
+  /// @return list of values to compare
+  ///
+  const std::vector<T> getValues(const Json::Value & values) const {
+    if (!values.isArray())
+      throw std::runtime_error("IN Expression value must be an array.");
+
+    std::vector<T> converted;
+
+    for (const auto &v : values) {
+      converted.push_back(json_converter::convert<T>(v));
     }
-    return result;
+    return converted;
   }
 };
 
