@@ -75,28 +75,28 @@
       "functions":[
         {"type":"SUM", "field":"OL_AMOUNT", "as":"REVENUE"}
       ]
-    }//,
-    // "select":{
-    //   "type":"SimpleTableScan",
-    //   "positions": "true",
-    //   "predicates": [
-    //     {"type":"GT", "in":0, "f": "REVENUE", "vtype":1, "value":1}
-    //   ]
-    // },
-    // "secondProject":{
-    //   "type":"ProjectionScan",
-    //   "fields":["C_LAST","C_ID","O_ID","O_ENTRY_D","O_OL_CNT","REVENUE"]
-    // }
+    }
+    , "select":{
+      "type":"SimpleTableScan",
+      "positions": "true",
+      "predicates": [
+        {"type":"GT_V", "in":0, "f": "REVENUE", "vtype":1, "value":1.0}
+      ]
+    }
+    ,"secondProject":{
+      "type":"ProjectionScan",
+      "fields":["C_LAST","C_ID","O_ID","O_ENTRY_D","O_OL_CNT","REVENUE"]
+    }
     // "sort":{
     //   "type":"SortScan",
-    //   "field":"OL_NUMBER"
+    //   "field":"OL_AMOUNT"
     // }
   },
   "edges": [
     ["getTableCustomers","joinOrders"],["getTableOrders","joinOrders"],
     ["joinOrders","joinOrderline"],["getTableOrderline","joinOrderline"],
     ["joinOrderline","firstProject"],
-    ["firstProject","hash"],["hash","groupBy"],["firstProject","groupBy"]// ,
-    // ["groupBy","select"],["select","secondProject"]
+    ["firstProject","hash"],["hash","groupBy"],["firstProject","groupBy"],["groupBy","select"],
+    ["select","secondProject"]
   ]
 }
