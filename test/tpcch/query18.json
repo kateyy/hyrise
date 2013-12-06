@@ -86,17 +86,24 @@
     ,"secondProject":{
       "type":"ProjectionScan",
       "fields":["C_LAST","C_ID","O_ID","O_ENTRY_D","O_OL_CNT","REVENUE"]
+    },
+    "sort_REVENUE":{
+      "type":"SortScan",
+      "fields": [5],
+      "asc": false
+    },
+    "sort_O_ENTRY_D":{
+      "type":"SortScan",
+      "fields": [3],
+      "asc": true
     }
-    // "sort":{
-    //   "type":"SortScan",
-    //   "field":"OL_AMOUNT"
-    // }
   },
   "edges": [
     ["getTableCustomers","joinOrders"],["getTableOrders","joinOrders"],
     ["joinOrders","joinOrderline"],["getTableOrderline","joinOrderline"],
     ["joinOrderline","firstProject"],
     ["firstProject","hash"],["hash","groupBy"],["firstProject","groupBy"],["groupBy","select"],
-    ["select","secondProject"]
+    ["select","secondProject"],
+    ["secondProject", "sort_REVENUE"], ["sort_REVENUE", "sort_O_ENTRY_D"]
   ]
 }
