@@ -1,6 +1,6 @@
 // Copyright (c) 2012 Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH. All rights reserved.
 #include "testing/test.h"
-
+#include "io/StorageManager.h"
 #include "helper.h"
 
 namespace hyrise {
@@ -21,15 +21,15 @@ protected:
     executeAndWait(loadFromFile("test/tpcc/load_tpcc_tables.json"));
 
     // load expected output table
-    StorageManager *sm = StorageManager::getInstance();
+    hyrise::io::StorageManager *sm = hyrise::io::StorageManager::getInstance();
     sm->loadTableFile("refTable", "tpcch/query"+std::to_string(Query::id())+"_result.tbl");
 
     // load query from file
     query = loadFromFile("test/tpcch/query"+std::to_string(Query::id())+".json");
   }
 
-  std::shared_ptr<AbstractTable> reference() {
-    StorageManager *sm = StorageManager::getInstance();
+  std::shared_ptr<hyrise::storage::AbstractTable> reference() {
+    hyrise::io::StorageManager *sm = hyrise::io::StorageManager::getInstance();
     return sm->getTable("refTable");
   }
   std::string query;
