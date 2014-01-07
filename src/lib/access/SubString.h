@@ -15,16 +15,17 @@ public:
   static std::shared_ptr<PlanOperation> parse(const Json::Value &data);
   const std::string vname();
 
-  void setRange(const int &from, const int &count);
-  void setColName(const std::string &colName);
-  int getFrom() const;
-  int getCount() const;
-  std::string getColName() const;
+  void addStart(const int &start);
+  void addCount(const int &count);
+  void addColName(const std::string &colName);
+  int getStart(int col) const;
+  int getCount(int col) const;
+  std::string getColName(int col) const;
 
 private:
-  int _from;
-  int _count;
-  std::string _colName;
+  std::vector<int> _start;
+  std::vector<int> _count;
+  std::vector<std::string> _colName;
 };
 
 }

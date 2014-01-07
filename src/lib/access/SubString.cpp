@@ -5,7 +5,10 @@
 #include "access/system/QueryParser.h"
 
 #include "storage/AbstractTable.h"
+#include "storage/MutableVerticalTable.h"
 #include "storage/TableBuilder.h"
+
+#include <iostream>
 
 namespace hyrise {
 namespace access {
@@ -18,76 +21,59 @@ SubString::~SubString() {
 }
 
 void SubString::executePlanOperation() {
+  
+  auto in = std::const_pointer_cast<storage::AbstractTable>(input.getTable(0));
 
-  const auto &in = input.getTable(0);
-
-  storage::TableBuilder::param_list list;
-  for(size_t col=0; col<in->columnCount(); col++){
-    switch(in->typeOfColumn(col)){
-      case IntegerType:
-        list.append().set_type("INTEGER").set_name(in->nameOfColumn(col));
-      break;
-      case FloatType:
-        list.append().set_type("FLOAT").set_name(in->nameOfColumn(col));
-      break;
-      case StringType:
-        list.append().set_type("STRING").set_name(in->nameOfColumn(col));
-      break;
+  for (unsigned i = 0; i < _field_definition.size(); ++i) {
+    if(in->typeOfColumn(_field_definition[i]) != StringType){
+      throw std::runtime_error(in->nameOfColumn(_field_definition[i])+" is not of string type");
     }
   }
 
-  list.append().set_type("STRING").set_name(getColName());
+  storage::TableBuilder::param_list list;
+
+  for (unsigned i = 0; i < _field_definition.size(); ++i){
+    list.append().set_type("STRING").set_name(getColName(i));
+  }
   auto resultTable = storage::TableBuilder::build(list);
 
   resultTable->resize(in->size());
 
-  if(in->typeOfColumn(_field_definition[0]) == StringType){
-    for(size_t row = 0; row < in->size(); row++) {
-      for(size_t col = 0; col < in->columnCount(); col++) {
-        switch(in->typeOfColumn(col)){
-          case IntegerType:
-            resultTable->setValue<hyrise_int_t>(col, row, in->getValue<hyrise_int_t>(col, row) );
-          break;
-          case FloatType:
-            resultTable->setValue<hyrise_float_t>(col, row, in->getValue<hyrise_float_t>(col, row) );
-          break;
-          case StringType:
-            resultTable->setValue<hyrise_string_t>(col, row, in->getValue<hyrise_string_t>(col, row) );
-          break;
-        }
-      }
-
-      resultTable->setValue<hyrise_string_t>(in->columnCount(), row, 
-        (in->getValue<std::string>(_field_definition[0], row)).substr(getFrom(), getCount()) );
+  for(size_t row = 0; row < in->size(); row++) {
+    for(size_t col = 0; col < _field_definition.size(); col++) {
+      resultTable->setValue<hyrise_string_t>(col, row, 
+        (in->getValue<std::string>(_field_definition[col], row)).substr(getStart(col), getCount(col)) );
     }
   }
 
-  addResult(resultTable);
-  //addResult(std::make_shared<storage::MutableVerticalTable>(
-    //std::vector<storage::atable_ptr_t> {in, resultTable}));
+  addResult(std::make_shared<storage::MutableVerticalTable>(
+    std::vector<storage::atable_ptr_t> {in, resultTable}));
 }
 
 std::shared_ptr<PlanOperation> SubString::parse(const Json::Value &data) {
   std::shared_ptr<SubString> instance = BasicParser<SubString>::parse(data);
 
-  int from = 0;
-  int count = 0;
-  if (data.isMember("from")) {
-    from = data["from"].asInt();
-  }else{
-    throw std::runtime_error("Please define a start with member 'from'!");
-  }
-  if (data.isMember("count")) {
-    count = data["count"].asInt();
-  }else{
-    throw std::runtime_error("Please define a length with member 'count'!");
-  }
-  instance->setRange(from, count);
+  size_t colCount = 0;
 
-  if (data.isMember("as")) {
-    instance->setColName(data["as"].asString());
+  if(data.isMember("fields")){
+    colCount = data["fields"].size();
   }else{
-    throw std::runtime_error("Please define a column name with member 'as'!");
+    throw std::runtime_error("No fields defined");
+  }
+  if(!data.isMember("strstart") || colCount != data["strstart"].size()){
+    throw std::runtime_error("number of definitions in 'strstart' unequal to number of selected columns");
+  }
+  if(!data.isMember("strcount") || colCount != data["strcount"].size()){
+    throw std::runtime_error("number of definitions in 'strcount' unequal to number of selected columns");
+  }
+  if(!data.isMember("as") || colCount != data["as"].size()){
+    throw std::runtime_error("number of definitions in 'as' unequal to number of selected columns");
+  }
+
+  for (int i = 0; i < int(colCount); ++i) {
+    instance->addStart(data["strstart"][i].asInt());
+    instance->addCount(data["strcount"][i].asInt());
+    instance->addColName(data["as"][i].asString());
   }
 
   return instance;
@@ -98,25 +84,28 @@ const std::string SubString::vname() {
 }
 
 
-void SubString::setRange(const int &from, const int &count){
-  _from = from;
-  _count = count;
+void SubString::addStart(const int &start){
+  _start.push_back(start);
 }
 
-void SubString::setColName(const std::string &colName){
-  _colName = colName;
-}
-  
-int SubString::getFrom() const {
-  return _from;
-}
-  
-int SubString::getCount() const {
-  return _count;
+void SubString::addCount(const int &count){
+  _count.push_back(count);
 }
 
-std::string SubString::getColName() const {
-  return _colName;
+void SubString::addColName(const std::string &colName){
+  _colName.push_back(colName);
+}
+  
+int SubString::getStart(int col) const {
+  return _start.at(col);
+}
+  
+int SubString::getCount(int col) const {
+  return _count.at(col);
+}
+
+std::string SubString::getColName(int col) const {
+  return _colName.at(col);
 }
 
 }
