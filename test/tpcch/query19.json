@@ -41,7 +41,7 @@
                 { "type": "AND" },
                   { "type": "GT", "in": 0, "f": "I_PRICE", "vtype": 1, "value": 1.0 },
                   { "type": "LT", "in": 0, "f": "I_PRICE", "vtype": 1, "value": 10.0},
-                { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 1, "value": [1, 2, 3]}
+                { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 0, "value": [1, 2, 3]}
         ]
     },
     "join_b": {
@@ -69,7 +69,7 @@
                 { "type": "AND" },
                   { "type": "GT", "in": 0, "f": "I_PRICE", "vtype": 1, "value": 1.0 },
                   { "type": "LT", "in": 0, "f": "I_PRICE", "vtype": 1, "value": 10.0},
-                { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 1, "value": [1, 2, 4]}
+                { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 0, "value": [1, 2, 4]}
         ]
     },
     "join_c": {
@@ -97,7 +97,7 @@
                 { "type": "AND" },
                   { "type": "GT", "in": 0, "f": "I_PRICE", "vtype": 1, "value": 1.0 },
                   { "type": "LT", "in": 0, "f": "I_PRICE", "vtype": 1, "value": 10.0},
-                { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 1, "value": [1, 5, 3]}
+                { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 0, "value": [1, 5, 3]}
         ]
     },
     "unionall" : {
