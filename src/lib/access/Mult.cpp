@@ -37,7 +37,7 @@ void Mult::executePlanOperation() {
   resultTable->resize(in->size());
 
   for(size_t row = 0; row < in->size(); row++) {
-    float mulValue = 1.f;
+    float mulValue = getFactor();
     for(size_t col = 0; col < _field_definition.size(); col++) {
       if(in->typeOfColumn(_field_definition[col]) == IntegerType)
         mulValue *= in->getValue<hyrise_int_t>(_field_definition[col], row);
@@ -61,6 +61,8 @@ std::shared_ptr<PlanOperation> Mult::parse(const Json::Value &data) {
   if(!data.isMember("fields") || data["fields"].size()<1){
     throw std::runtime_error("At least one field should be defined in \"fields\"");
   }
+
+  instance->setFactor(data.isMember("factor") ? data["factor"].asFloat() : 1.f);
 
   if(data.isMember("as")){
     instance->setColName(data["as"].asString());
@@ -88,12 +90,20 @@ void Mult::setVType(const int &vtype){
   _vtype = vtype;
 }
 
+void Mult::setFactor(const float &factor){
+  _factor = factor;
+}
+
 void Mult::setColName(const std::string &colName){
   _colName = colName;
 }
 
 int Mult::getVType() const {
   return _vtype;
+}
+
+float Mult::getFactor() const {
+  return _factor;
 }
 
 std::string Mult::getColName() const {
