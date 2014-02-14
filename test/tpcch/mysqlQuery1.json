@@ -1,9 +1,8 @@
 {
   "operators" : {
-    "loadTable" :{
-      "type": "MySQLTableLoad",
-      "table": "ORDER_LINE",
-      "database": "TPCC1W4"
+    "getTableOrderLine" :{
+      "type" : "GetTable",
+      "name" : "ORDER_LINE"
     },
     "select":{
       "type":"SimpleTableScan",
@@ -38,7 +37,7 @@
     }
   },
   "edges": [
-    ["loadTable","select"],["select","project"],["project","hash"],
+    ["getTableOrderLine","select"],["select","project"],["project","hash"],
       ["hash","groupBy"],["project","groupBy"],["groupBy","sort"]
   ]
 }

@@ -1,0 +1,50 @@
+{
+    "operators": {
+        "load_customer" :{
+          "type": "MySQLTableLoad",
+          "table": "CUSTOMER",
+          "database": "TPCC1W4"
+        },
+        "load_district" :{
+          "type": "MySQLTableLoad",
+          "table": "DISTRICT",
+          "database": "TPCC1W4"
+        },
+        "load_history" :{
+          "type": "MySQLTableLoad",
+          "table": "HISTORY",
+          "database": "TPCC1W4"
+        },
+        "load_item" :{
+          "type": "MySQLTableLoad",
+          "table": "ITEM",
+          "database": "TPCC1W4"
+        },
+        "load_new_order" :{
+          "type": "MySQLTableLoad",
+          "table": "NEW_ORDER",
+          "database": "TPCC1W4"
+        },
+        "load_order_line" :{
+          "type": "MySQLTableLoad",
+          "table": "ORDER_LINE",
+          "database": "TPCC1W4"
+        },
+        "load_orders" :{
+          "type": "MySQLTableLoad",
+          "table": "ORDERS",
+          "database": "TPCC1W4"
+        },
+        "load_stock" :{
+          "type": "MySQLTableLoad",
+          "table": "STOCK",
+          "database": "TPCC1W4"
+        },
+        "load_warehouse" :{
+          "type": "MySQLTableLoad",
+          "table": "WAREHOUSE",
+          "database": "TPCC1W4"
+        }
+    },
+    "edges" : [["load_customer","load_district"], ["load_district","load_history"], ["load_history","load_item"], ["load_item","load_new_order"], ["load_new_order","load_order_line"], ["load_order_line","load_orders"], ["load_orders","load_stock"], ["load_stock","load_warehouse"]]
+}

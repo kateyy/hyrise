@@ -15,7 +15,7 @@ protected:
     std::string numberString(GetParam());
     
     // load input tables
-    executeAndWait(loadFromFile("test/tpcc/load_tpcc_tables.json"));
+    executeAndWait(loadFromFile("test/tpcc/load_tpcc_csv_tables.json"));
 
     // load expected output table
     hyrise::io::StorageManager *sm = hyrise::io::StorageManager::getInstance();
