@@ -23,8 +23,10 @@ sloccount.sc
 benchmark_data
 persistency/
 test/tpcc/tables/
+test/tpcch/tables/
 *.swp
 tools/clang34*
+
 
 *.gch
 *.o
