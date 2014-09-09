@@ -144,7 +144,7 @@ class TpcchGenerator:
         elif choice == 1:
             return self.__auxiliary()+' '+self.__verb()
         elif choice == 2:
-            return self.__verb()+', '+self.__adverb()
+            return self.__verb()+'; '+self.__adverb()
         else:
             return self.__auxiliary()+' '+self.__verb()+' '+self.__adverb()
 
@@ -727,13 +727,13 @@ class TpcchGenerator:
         self.__printOutProgress(startProgress,endProgress,1.0)
 
     def __createNewOrder(self,startProgress,endProgress):
-        newOrderHeaderFile = open(self.__path + 'newOrder_header.tbl', 'w')
+        newOrderHeaderFile = open(self.__path + 'new_order_header.tbl', 'w')
         newOrderHeaderFile.write('NO_O_ID|NO_D_ID|NO_W_ID\n')
         newOrderHeaderFile.write('INTEGER|INTEGER|INTEGER\n')
         newOrderHeaderFile.write('0_R|0_R|0_R')
         newOrderHeaderFile.close()
 
-        newOrderContentFile = open(self.__path + 'newOrder.csv', 'w')
+        newOrderContentFile = open(self.__path + 'new_order.csv', 'w')
 
         districtsPerWarehouse = 10
         ordersPerDistrict = 3000
