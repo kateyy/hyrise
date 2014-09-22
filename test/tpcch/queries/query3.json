@@ -1,33 +1,33 @@
 {
   "operators" : {
     "getTableCustomer" :{
-      "type"     : "GetTable",
-      "name"    : "CUSTOMER"
+      "type" : "GetTable",
+      "name" : "CUSTOMER"
     },
     "getTableNeworder" :{
-      "type"     : "GetTable",
-      "name"    : "NEW_ORDER"
+      "type" : "GetTable",
+      "name" : "NEW_ORDER"
     },
     "getTableOrders" :{
-      "type"     : "GetTable",
-      "name"    : "ORDERS"
+      "type" : "GetTable",
+      "name" : "ORDERS"
     },
     "getTableOrderline" :{
-      "type"     : "GetTable",
-      "name"    : "ORDER_LINE"
+      "type" : "GetTable",
+      "name" : "ORDER_LINE"
     },
     "selectCustomer":{
       "type":"SimpleTableScan",
       "positions": true,
       "predicates": [
-        {"type":"LIKE", "in":0, "f": "C_STATE", "vtype":2, "value":".*2"}
+        {"type":"LIKE", "in":0, "f": "C_STATE", "vtype":2, "value":"A.*"}
       ]
     },
     "selectOrders":{
       "type":"SimpleTableScan",
       "positions": true,
       "predicates": [
-        {"type":"GT", "in":0, "f": "O_ENTRY_D", "vtype":2, "value":"2013-09-15"}
+        {"type":"GT", "in":0, "f": "O_ENTRY_D", "vtype":0, "value":20140910155706}
       ]
     },
     "joinCustomerOrders": {
@@ -130,9 +130,15 @@
         {"type":"SUM", "field":"OL_AMOUNT", "as":"REVENUE"}
       ]
     },
-    "sort":{
+    "sort_REVENUE":{
       "type":"SortScan",
-      "fields":[3, 4]
+      "fields": [3],
+      "asc": false
+    },
+    "sort_O_ENTRY_D":{
+      "type":"SortScan",
+      "fields": [4],
+      "asc": true
     }
   },
   "edges": [
@@ -142,6 +148,7 @@
     ["joinNeworder","joinOrderline"],["getTableOrderline","joinOrderline"],
     ["joinOrderline","project"],
     ["project","hash"],["hash","groupBy"],["project","groupBy"],
-    ["groupBy", "sort"]
+    ["groupBy", "sort_REVENUE"],
+    ["sort_REVENUE", "sort_O_ENTRY_D"]
   ]
 }

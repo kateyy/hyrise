@@ -1,0 +1,26 @@
+{
+  "operators" : {
+    "getTableCustomers" :{
+            "type": "TableLoad",
+            "table": "CUSTOMER",
+            "filename": "tpcch/tables/customer.csv",
+            "header": "tpcch/tables/customer_header.tbl",
+            "delimiter": ","
+    },
+    "firstProject":{
+      "type":"ProjectionScan",
+      "fields": ["C_ID","C_DISCOUNT"]
+    },
+    "select":{
+      "type":"SimpleTableScan",
+      "positions": true,
+      "predicates": [
+        {"type":"GT_V", "in":0, "f": "C_DISCOUNT", "vtype":1, "value":0.3}
+      ]
+    }
+  },
+  "edges": [
+    ["getTableCustomers","firstProject"],
+    ["firstProject","select"]
+  ]
+}

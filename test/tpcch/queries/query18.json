@@ -1,17 +1,17 @@
 {
   "operators" : {
     "getTableCustomers" :{
-      "type"     : "GetTable",
-      "name"    : "CUSTOMER"
-      },
+      "type" : "GetTable",
+      "name" : "CUSTOMER"
+    },
     "getTableOrders" :{
-      "type"     : "GetTable",
-      "name"    : "ORDERS"
-      },
+      "type" : "GetTable",
+      "name" : "ORDERS"
+    },
     "getTableOrderline" :{
-      "type"     : "GetTable",
-      "name"    : "ORDER_LINE"
-      },
+      "type" : "GetTable",
+      "name" : "ORDER_LINE"
+    },
     "joinOrders": {
     "type":"JoinScan",
     "predicates": [
@@ -75,15 +75,15 @@
       "functions":[
         {"type":"SUM", "field":"OL_AMOUNT", "as":"REVENUE"}
       ]
-    }
-    , "select":{
+    },
+    "select":{
       "type":"SimpleTableScan",
       "positions": true,
       "predicates": [
-        {"type":"GT_V", "in":0, "f": "REVENUE", "vtype":1, "value":1.0}
+        {"type":"GT_V", "in":0, "f": "REVENUE", "vtype":1, "value":200.0}
       ]
-    }
-    ,"secondProject":{
+    },
+    "secondProject":{
       "type":"ProjectionScan",
       "fields":["C_LAST","C_ID","O_ID","O_ENTRY_D","O_OL_CNT","REVENUE"]
     },

@@ -3,7 +3,7 @@
     "getTableOrderLine" :{
       "type" : "GetTable",
       "name" : "ORDER_LINE"
-      },
+    },
     "select":{
       "type":"SimpleTableScan",
       "positions": true,
@@ -11,8 +11,8 @@
         {"type":"AND"},
         {"type":"AND"},
         {"type":"AND"},
-        {"type":"GT", "in":0, "f":"OL_DELIVERY_D","vtype":2, "value":"2013-08-22 10:12:50.000000"},
-        {"type":"LT", "in":0, "f": "OL_DELIVERY_D", "vtype":2, "value":"2013-10-30 10:12:51.000000"},
+        {"type":"GT", "in":0, "f":"OL_DELIVERY_D","vtype":0, "value":20140910155706},
+        {"type":"LT", "in":0, "f": "OL_DELIVERY_D", "vtype":0, "value":20140910155708},
         {"type":"GT", "in":0, "f": "OL_QUANTITY", "vtype":0, "value":0},
         {"type":"LT", "in":0, "f": "OL_QUANTITY", "vtype":0, "value":100001}
       ]
@@ -29,7 +29,6 @@
     }
   },
   "edges": [
-    ["getTableOrderLine","select"],
-      ["select","groupBy"],["groupBy","project"]
+    ["getTableOrderLine","select"],["select","groupBy"],["groupBy","project"]
   ]
 }

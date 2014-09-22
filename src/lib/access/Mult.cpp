@@ -64,7 +64,7 @@ void Mult::executePlanOperation() {
 std::shared_ptr<PlanOperation> Mult::parse(const Json::Value& data) {
   std::shared_ptr<Mult> instance = BasicParser<Mult>::parse(data);
 
-  if (!data.isMember("fields") || data["fields"].size() != 1) {
+  if (!data.isMember("fields") || data["fields"].size() == 0) {
     throw std::runtime_error("\"fields\"has to be defined");
   }
 

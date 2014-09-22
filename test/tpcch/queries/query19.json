@@ -1,0 +1,80 @@
+{
+  "operators" : {
+    "getTableOrderLine" :{
+      "type"     : "GetTable",
+      "name"    : "ORDER_LINE"
+    },
+    "getTableItem" :{
+      "type"     : "GetTable",
+      "name"    : "ITEM"
+    },
+    "projectOrderLine" : {
+      "type": "ProjectionScan",
+      "fields": ["OL_I_ID", "OL_W_ID", "OL_QUANTITY", "OL_AMOUNT"]
+    },
+    "projectItem" : {
+      "type": "ProjectionScan",
+      "fields": ["I_ID", "I_PRICE", "I_DATA"]
+    },
+    "selectionOrderLine" : {
+      "type" : "SimpleTableScan",
+        "positions" : true,
+        "predicates" : [
+          { "type": "AND" },
+            { "type": "GT", "in": 0, "f": "OL_QUANTITY", "vtype": 0, "value": 0},
+            { "type": "LT", "in": 0, "f": "OL_QUANTITY", "vtype": 0, "value": 10 }
+        ]
+    },
+    "selectionItem" : {
+      "type" : "SimpleTableScan",
+        "positions" : true,
+        "predicates" : [
+          { "type": "AND" },
+            { "type": "GT", "in": 0, "f": "I_PRICE", "vtype": 1, "value": 1.0 },
+            { "type": "LT", "in": 0, "f": "I_PRICE", "vtype": 1, "value": 10.0}
+        ]
+    },
+    "joinItemOrderline": {
+      "type" : "JoinScan",
+      "predicates" : [
+        { "type" : 3,
+          "input_left" : 0,
+          "field_left" : "OL_I_ID",
+          "input_right" : 1,
+          "field_right" : "I_ID"
+        }
+      ]
+    },
+    "selectLetters" : {
+      "type" : "SimpleTableScan",
+        "positions" : true,
+        "predicates" : [
+
+          { "type": "OR" },
+            { "type": "AND" },
+              { "type": "LIKE", "in": 0, "f": "I_DATA", "vtype": 2, "value": ".*a" },
+              { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 0, "value": [1, 2, 3]},
+            { "type": "OR" },
+              { "type": "AND" },
+                { "type": "LIKE", "in": 0, "f": "I_DATA", "vtype": 2, "value": ".*b" },
+                { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 0, "value": [1, 2, 4]},
+              { "type": "AND" },
+                { "type": "LIKE", "in": 0, "f": "I_DATA", "vtype": 2, "value": ".*c" },
+                  { "type": "IN", "in": 0, "f": "OL_W_ID", "vtype": 0, "value": [1, 5, 3]}
+        ]
+    },
+    "groupBy":{
+      "type": "GroupByScan",
+      "functions":[
+        {"type":"SUM", "field":"OL_AMOUNT", "as":"REVENUE"}
+      ]
+    }
+  },
+  "edges": [
+    ["getTableOrderLine", "projectOrderLine"],["projectOrderLine", "selectionOrderLine"],
+    ["getTableItem", "projectItem"],["projectItem", "selectionItem"],
+    ["selectionOrderLine", "joinItemOrderline"],["selectionItem", "joinItemOrderline"],
+    ["joinItemOrderline" ,"selectLetters"],
+    ["selectLetters" ,"groupBy"]
+  ]
+}

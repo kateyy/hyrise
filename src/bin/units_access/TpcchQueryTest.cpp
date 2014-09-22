@@ -15,14 +15,14 @@ class TpcchQueryTest : public ::testing::TestWithParam<const char*> {
     std::string numberString(GetParam());
 
     // load input tables
-    executeAndWait(loadFromFile("test/tpcc/load_tpcc_tables.json"));
+    executeAndWait(loadFromFile("test/tpcch/load_tpcch_tables.json"));
 
     // load expected output table
     hyrise::io::StorageManager* sm = hyrise::io::StorageManager::getInstance();
-    sm->loadTableFile("refTable", "tpcch/query" + numberString + "_result.tbl");
+    sm->loadTableFile("refTable", "tpcch/reference_tables/query" + numberString + "_result.tbl");
 
     // load query from file
-    query = loadFromFile("test/tpcch/query" + numberString + ".json");
+    query = loadFromFile("test/tpcch/queries/query" + numberString + ".json");
   }
 
   std::shared_ptr<hyrise::storage::AbstractTable> reference() {

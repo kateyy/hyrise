@@ -3,15 +3,22 @@
     "getTableStock" :{
       "type": "TableLoad",
       "table": "stock",
-      "filename": "tpcc/stock.csv",
-      "header": "tpcc/stock_header.tbl",
+      "filename": "tpcch/tables/stock.csv",
+      "header": "tpcch/tables/stock_header.tbl",
       "delimiter": ","
     },
     "getTableItem" :{
       "type": "TableLoad",
       "table": "item",
-      "filename": "tpcc/item.csv",
-      "header": "tpcc/item_header.tbl",
+      "filename": "tpcch/tables/item.csv",
+      "header": "tpcch/tables/item_header.tbl",
+      "delimiter": ","
+    },
+    "getTableSupplier" :{
+      "type": "TableLoad",
+      "table": "supplier",
+      "filename": "tpcch/tables/supplier.csv",
+      "header": "tpcch/tables/supplier_header.tbl",
       "delimiter": ","
     },
     "selectItem":{
@@ -19,7 +26,7 @@
       "positions": true,
       "predicates": [
         {"type": "NOT"},
-        {"type":"LIKE", "in":0, "f": "I_DATA", "vtype":2, "value":".*1"}
+        {"type":"LIKE", "in":0, "f": "I_DATA", "vtype":2, "value":"zz.*"}
       ]
     },
     "joinItemStock": {
@@ -50,8 +57,8 @@
     "selectSubStr": {
       "type" : "SubString",
       "fields" : ["I_DATA"],
-      "strstart" : [2],
-      "strcount" : [4],
+      "strstart" : [0],
+      "strcount" : [3],
       "as" : ["BRAND"]
     },
     "project": {

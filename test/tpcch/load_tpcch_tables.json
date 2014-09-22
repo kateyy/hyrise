@@ -1,0 +1,77 @@
+{
+    "operators": {
+        "load_customer": {
+            "type": "TableLoad",
+            "table": "CUSTOMER",
+            "filename": "tpcch/tables/customer.csv",
+            "header": "tpcch/tables/customer_header.tbl",
+            "delimiter": ","
+            },
+        "load_district": {
+            "type": "TableLoad",
+            "table": "DISTRICT",
+            "filename": "tpcch/tables/district.csv",
+            "header": "tpcch/tables/district_header.tbl",
+            "delimiter": ","
+            },
+        "load_history": {
+            "type": "TableLoad",
+            "table": "HISTORY",
+            "filename": "tpcch/tables/history.csv",
+            "header": "tpcch/tables/history_header.tbl",
+            "delimiter": ","
+            },
+        "load_item": {
+            "type": "TableLoad",
+            "table": "ITEM",
+            "filename": "tpcch/tables/item.csv",
+            "header": "tpcch/tables/item_header.tbl",
+            "delimiter": ","
+            },
+        "load_new_order": {
+            "type": "TableLoad",
+            "table": "NEW_ORDER",
+            "filename": "tpcch/tables/new_order.csv",
+            "header": "tpcch/tables/new_order_header.tbl",
+            "delimiter": ","
+            },
+        "load_order_line": {
+            "type": "TableLoad",
+            "table": "ORDER_LINE",
+            "filename": "tpcch/tables/orderline.csv",
+            "header": "tpcch/tables/orderline_header.tbl",
+            "delimiter": ","
+            },
+        "load_orders": {
+            "type": "TableLoad",
+            "table": "ORDERS",
+            "filename": "tpcch/tables/orders.csv",
+            "header": "tpcch/tables/orders_header.tbl",
+            "delimiter": ","
+            },
+        "load_stock": {
+            "type": "TableLoad",
+            "table": "STOCK",
+            "filename": "tpcch/tables/stock.csv",
+            "header": "tpcch/tables/stock_header.tbl",
+            "delimiter": ","
+            },
+        "load_warehouse": {
+            "type": "TableLoad",
+            "table": "WAREHOUSE",
+            "filename": "tpcch/tables/warehouse.csv",
+            "header": "tpcch/tables/warehouse_header.tbl",
+            "delimiter": ","
+        }
+    },
+    "edges" : [
+      ["load_customer","load_district"],
+      ["load_district","load_history"],
+      ["load_history","load_item"],
+      ["load_item","load_new_order"],
+      ["load_new_order","load_order_line"],
+      ["load_order_line","load_orders"],
+      ["load_orders","load_stock"],
+      ["load_stock","load_warehouse"]
+      ]
+}
